@@ -2,23 +2,23 @@
 #include <vector>
 #include <list>
 
-int main() {
-    int rows = 7, cols = 7;
+const int rows = 7, cols = 7;
 
-    std::string values[7][7] = {
-        {"0",  "n1", "n2", "n3", "n4", "n5", "n6"},
-        {"n1", "0",  "10", "0",  "0",  "8",  "5"},
-        {"n2", "10", "0",  "0",  "20", "12", "0"},
-        {"n3", "0",  "0",  "0",  "4",  "0",  "0"},
-        {"n4", "0",  "20", "4",  "0",  "15", "0"},
-        {"n5", "8",  "12", "0",  "15", "0",  "7"},
-        {"n6", "5",  "0",  "0",  "0",  "7",  "0"}
-    };
+std::string values[7][7] = {
+    {"0",  "n1", "n2", "n3", "n4", "n5", "n6"},
+    {"n1", "0",  "10", "0",  "0",  "8",  "5"},
+    {"n2", "10", "0",  "0",  "20", "12", "0"},
+    {"n3", "0",  "0",  "0",  "4",  "0",  "0"},
+    {"n4", "0",  "20", "4",  "0",  "15", "0"},
+    {"n5", "8",  "12", "0",  "15", "0",  "7"},
+    {"n6", "5",  "0",  "0",  "0",  "7",  "0"}
+};
 
+void printAdjacencyList() {
     const int vertices = 6;
     std::vector<char> vertexNames = {'A', 'B', 'C', 'D', 'E', 'F'};
-
     std::vector<std::list<int>> adjList(vertices);
+    
     adjList[0] = {1, 2};       // A -> B, C
     adjList[1] = {0, 2, 3, 5}; // B -> A, C, D, F
     adjList[2] = {0, 1};       // C -> A, B
@@ -34,7 +34,9 @@ int main() {
         }
         std::cout << "\n";
     }
+}
 
+void printAdjacencyMatrix() {
     std::cout << "\nGraph Adjacency Matrix Representation:\n";
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -42,7 +44,9 @@ int main() {
         }
         std::cout << "\n";
     }
+}
 
+void determineNodes() {
     int e = -1, d = -1, b = -1, f = -1, a = -1, c = -1;
 
     //E
@@ -82,23 +86,25 @@ int main() {
         if (connections == 2) { a = i; break; }
     }
 
-    // C
+    //C
     for (int i = 1; i < rows; i++) {
         if (i != e && i != d && i != b && i != f && i != a) { c = i; break; }
     }
 
-    
-    std::cout << "A = " << values[a][0] << "\n";
+    std::cout << "\nA = " << values[a][0] << "\n";
     std::cout << "B = " << values[b][0] << "\n";
     std::cout << "C = " << values[c][0] << "\n";
     std::cout << "D = " << values[d][0] << "\n";
     std::cout << "E = " << values[e][0] << "\n";
     std::cout << "F = " << values[f][0] << "\n";
 
-    
-
     std::string distance = values[b][c];
     std::cout << "\nDistance between B and C: " << distance << "\n";
+}
 
+int main() {
+    printAdjacencyList();
+    printAdjacencyMatrix();
+    determineNodes();
     return 0;
 }
