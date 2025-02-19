@@ -7,21 +7,13 @@ int main() {
 
     std::string values[7][7] = {
         {"0",  "n1", "n2", "n3", "n4", "n5", "n6"},
-        {"n1", "0",  "10", "0",  "0",  "8",  "0"},
+        {"n1", "0",  "10", "0",  "0",  "8",  "5"},
         {"n2", "10", "0",  "0",  "20", "12", "0"},
         {"n3", "0",  "0",  "0",  "4",  "0",  "0"},
         {"n4", "0",  "20", "4",  "0",  "15", "0"},
         {"n5", "8",  "12", "0",  "15", "0",  "7"},
-        {"n6", "0",  "0",  "0",  "0",  "7",  "0"}
+        {"n6", "5",  "0",  "0",  "0",  "7",  "0"}
     };
-
-    std::cout << "\nGraph Adjacency Matrix Representation:\n";
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            std::cout << values[i][j] << "\t";
-        }
-        std::cout << "\n";
-    }
 
     const int vertices = 6;
     std::vector<char> vertexNames = {'A', 'B', 'C', 'D', 'E', 'F'};
@@ -39,6 +31,14 @@ int main() {
         std::cout << vertexNames[i] << " -> ";
         for (int neighbor : adjList[i]) {
             std::cout << vertexNames[neighbor] << " ";
+        }
+        std::cout << "\n";
+    }
+
+    std::cout << "\nGraph Adjacency Matrix Representation:\n";
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            std::cout << values[i][j] << "\t";
         }
         std::cout << "\n";
     }
@@ -88,7 +88,7 @@ int main() {
     }
 
     
-    std::cout << "\nA = " << values[a][0] << "\n";
+    std::cout << "A = " << values[a][0] << "\n";
     std::cout << "B = " << values[b][0] << "\n";
     std::cout << "C = " << values[c][0] << "\n";
     std::cout << "D = " << values[d][0] << "\n";
@@ -96,6 +96,7 @@ int main() {
     std::cout << "F = " << values[f][0] << "\n";
 
     
+
     std::string distance = values[b][c];
     std::cout << "\nDistance between B and C: " << distance << "\n";
 
