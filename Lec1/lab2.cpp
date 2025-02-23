@@ -1,61 +1,90 @@
 #include <iostream>
 #include <vector>
-#include <algorithm> 
+#include <climits>
 
-const int rows = 8, cols = 8;
+class Graph {
+private:
+    const int rows = 7, cols = 7;
+    int** values;  
 
-int values[8][8] = {
-    {0, 5, 0, 12, 0, 0, 0, 25},   
-    {5, 0, 0, 8, 0, 0, 0, 0},    
-    {0, 0, 0, 2, 4, 5, 10, 0},
-    {12, 8, 2, 0, 0, 0, 0, 0},   
-    {0, 0, 4, 0, 0, 0, 0, 0},  
-    {0, 0, 0, 0, 0, 0, 0, 0}, 
-    {25, 0, 10, 0, 5, 5, 0, 0}  
+public:
+    Graph() {
+        values = new int*[rows];
+        for (int i = 0; i < rows; ++i) {
+            values[i] = new int[cols];
+        }
+
+        int temp[7][7] = {
+            {0, 5, 0, 12, 0, 0, 25},
+            {5, 0, 0, 8, 0, 0, 0},
+            {0, 0, 0, 2, 4, 5, 10},
+            {12, 8, 2, 0, 0, 0, 0},
+            {0, 0, 4, 0, 0, 0, 5},
+            {0, 0, 0, 0, 0, 0, 5},
+            {25, 0, 10, 0, 5, 5, 0}
+        };
+
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                values[i][j] = temp[i][j];
+            }
+        }
+    }
+
+    ~Graph() {
+        for (int i = 0; i < rows; ++i) {
+            delete[] values[i];
+        }
+        delete[] values;
+    }
+
+    int getDistance(int start, int end) const {
+        return values[start][end];
+    }
+
+    int calculatePathDistance(const std::vector<int>* path) const {
+        int totalDistance = 0;
+        for (size_t i = 0; i < path->size() - 1; ++i) {
+            totalDistance += getDistance((*path)[i], (*path)[i + 1]);
+        }
+        return totalDistance;
+    }
+
+    void calculateShortestPath() const {
+        std::vector<int>* paths[] = {
+            new std::vector<int>{0, 3, 2, 4, 6},  
+            new std::vector<int>{0, 1, 3, 2, 4, 6},
+            new std::vector<int>{0, 6}  
+        };
+
+        int shortestDistance = INT_MAX; 
+        std::vector<int>* shortestPath = nullptr;  
+
+        for (auto path : paths) {
+            int pathDistance = calculatePathDistance(path);
+            if (pathDistance < shortestDistance) {
+                shortestDistance = pathDistance;
+                shortestPath = path;  
+            }
+        }
+
+        std::cout << "\nShortest Path from A to G: ";
+        for (size_t i = 0; i < shortestPath->size(); ++i) {
+            std::cout << char('A' + (*shortestPath)[i]); 
+            if (i != shortestPath->size() - 1) {
+                std::cout << " -> ";
+            }
+        }
+        std::cout << "\nTotal distance: " << shortestDistance << "\n";
+
+        for (auto path : paths) {
+            delete path;
+        }
+    }
 };
 
-int getDistance(int start, int end) {
-    return values[start][end];
-}
-
-void calculateShortestPath() {
-    int A_to_D = getDistance(0, 3); 
-    int D_to_C = getDistance(3, 2);  
-    int C_to_E = getDistance(2, 4);   
-    int E_to_G = getDistance(4, 7);   
-    int C_to_G = getDistance(2, 7);   
-    int A_to_B = getDistance(0, 1);  
-    int B_to_D = getDistance(1, 3);   
-    int A_to_G = getDistance(0, 7);   
-
-    int A_to_d = 12;
-    int D_to_c = 2;
-    int C_to_e = 4;
-    int E_to_g = 5;
-    int C_to_g = 10;
-    int A_to_b = 5;
-    int B_to_d = 8;
-    int A_to_g = 25;
-
-    int path1 = A_to_d + D_to_c + C_to_e + E_to_g; 
-
-    int path2 = A_to_b + B_to_d + D_to_c + C_to_e + E_to_g;
-
-    int path3 = A_to_g;
-
-    if (path1 <= path2 && path1 <= path3) {
-        std::cout << "\nShortest Path from A to G: A -> D -> C -> E -> G\n";
-        std::cout << "Total distance: " << path1 << "\n";
-    } else if (path2 <= path1 && path2 <= path3) {
-        std::cout << "\nShortest Path from A to G: A -> B -> D -> C -> E -> G\n";
-        std::cout << "Total distance: " << path2 << "\n";
-    } else if (path3 <= path1 && path3 <= path2) {
-        std::cout << "\nShortest Path from A to G: A -> G\n";
-        std::cout << "Total distance: " << path3 << "\n";
-    }
-}
-
 int main() {
-    calculateShortestPath();
+    Graph graph;
+    graph.calculateShortestPath();
     return 0;
 }
